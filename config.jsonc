@@ -1,77 +1,131 @@
-{
-    "display":
-    {
-		"color": {
-			"keys": "#53ad54"
-		},
-        "separator": " → "
+//
+// Waybar configuration for Hyprland - Dual Bar Setup
+//
+// Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+//
+// =============================================================================
+[
+  {
+    // -------------------------------------------------------------------------
+    // Top Bar
+    // -------------------------------------------------------------------------
+    "layer": "top",
+    "position": "top",
+    "height": 15,
+    "modules-left": [
+      "hyprland/workspaces"
+    ],
+    "modules-center": [
+      "hyprland/window"
+    ],
+    "modules-right": [
+      "tray",
+      "clock#date",
+      "clock#time"
+    ],
+    // -------------------------------------------------------------------------
+    // Modules
+    // -------------------------------------------------------------------------
+    "hyprland/window": {
+      "format": "{}",
+      "max-length": 120,
+      "separate-outputs": true
     },
-
-    "logo":
-    {
-        "type": "small",
-		"color": {
-			"1": "#53ad54",
-			"2": "#53ad54"
-		},
-		"padding":
-		{
-			"top": 1,
-			"left": 2,
-		}
+    "hyprland/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": false,
+      "format": "{icon} {name}",
+      "on-click": "activate",
+      "format-icons": {
+        "1": "", // Icon: firefox-browser
+        "2": "", // Icon: mail
+        "3": "", // Icon: code
+        "4": "", // Icon: terminal
+        "5": "", // Icon: terminal
+        "urgent": "",
+        "active": "",
+        "default": ""
+      }
     },
-
-    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "modules":
-    [
-		"break",
-        {
-            "type": "custom",
-            "format": "╭─────SYSTEM─────",
-            "outputColor": "#53ad54"
-        },
-        {
-            "type": "host",
-            "key": "├─ host",
-            "format": "{1}"
-        },
-        {
-            "type": "os",
-            "key": "├─ OS",
-            "format": "{2}"
-        },
-        {
-            "type": "kernel",
-            "key": "└─ kernel",
-            "format": "{2}"
-        },
-        {
-            "type": "custom",
-            "format": "╭────HARDWARE────",
-            "outputColor": "#53ad54"
-        },
-        {
-            "type": "cpu",
-            "key": "├─ CPU",
-            "format": "{1}"
-        },
-        {
-            "type": "gpu",
-            "key": "├─ GPU",
-            "format": "{2}"
-        },
-        {
-            "type": "memory",
-            "key": "├─ RAM",
-	    "format": "{2}",
-        },
-	{
-	    "type": "disk",
-            "key": "└─ Storage",
-            "percent": {
-             "type": 1, // Show both percentage number and bar
-              "green": 30, // Values below 30% in green
-              "yellow": 70 // 30-70% in yellow, >70% in red
-        }
-   }]
-}
+    "clock#time": {
+      "interval": 1,
+      "format": "{:%I:%M %p}",
+      "tooltip": false
+    },
+    "clock#date": {
+      "interval": 10,
+      "format": "  {:%b%e, %Y}", // Icon: calendar-alt
+      "tooltip-format": "{:%e %B %Y}"
+    },
+    "tray": {
+      "icon-size": 15,
+      "spacing": 10
+    }
+  },
+  {
+    // -------------------------------------------------------------------------
+    // Bottom Bar
+    // -------------------------------------------------------------------------
+    "layer": "top",
+    "position": "bottom",
+    "height": 15,
+    "modules-left": [
+      "cpu",
+      "memory"
+    ],
+    "modules-center": [],
+    "modules-right": [
+      "disk",
+      "battery",
+      "custom/uptime"
+    ],
+    // -------------------------------------------------------------------------
+    // Modules
+    // -------------------------------------------------------------------------
+    "cpu": {
+      "interval": 5,
+      "format": "CPU: {usage}% ({avg_frequency} MHz)", // Icon: microchip
+      "states": {
+        "warning": 70,
+        "critical": 90
+      }
+    },
+    "memory": {
+      "interval": 5,
+      "format": "RAM: {}% ({used}GiB)", // Icon: memory
+      "states": {
+        "warning": 70,
+        "critical": 90
+      }
+    },
+    "disk": {
+      "interval": 30,
+      "format": "DISK: {percentage_used}% ({used}/{total})",
+      "path": "/"
+    },
+    "battery": {
+      "interval": 10,
+      "states": {
+        "warning": 30,
+        "critical": 15
+      },
+      // Connected to AC
+      "format": "{icon} Battery: {capacity}%", // Icon: bolt
+      // Not connected to AC
+      "format-discharging": "{icon} Battery: {capacity}%",
+      "format-icons": [
+        "", // Icon: battery-full
+        "", // Icon: battery-three-quarters
+        "", // Icon: battery-half
+        "", // Icon: battery-quarter
+        "" // Icon: battery-empty
+      ],
+      "tooltip": true
+    },
+    "custom/uptime": {
+      "exec": "uptime -p | sed 's/up //; s/ hours/h/; s/ hour/h/; s/ minutes/m/; s/ minute/m/'",
+      "interval": 60,
+      "format": "⏱ Uptime: {}"
+    }
+  }
+]
