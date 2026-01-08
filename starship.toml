@@ -1,7 +1,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 #"""
 format = """
-[](color_green)\
+ [](color_green)\
 $os\
 $username\
 [](bg:color_green fg:color_green)\
@@ -19,7 +19,6 @@ $php\
 $java\
 $kotlin\
 $haskell\
-$python\
 [](fg:color_green bg:color_green)\
 $docker_context\
 $conda\
